@@ -1,0 +1,25 @@
+{% extends 'discogs/base.html' %}
+{% block content %}
+    <div>
+        <h1>All artists</h1>
+    </div>
+    <div>
+        <table class="table">
+            <thead class="thead-light">
+                <td scope="col">Name</td>
+                <td scope="col">Country</td>
+                <td scope="col">Number of albums</td>
+            </thead>
+            {% for a in all_artists %}
+            <tr>
+                <td><a href="{% url 'discogs:artist-details' a.id%}">{{ a.name }}</a></td>
+                <td>{{ a.get_country_display }}</td>
+                <td>{{ a.album_set.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        <h2><a href="{% url 'discogs:artist-new' %}">Add New Artist</a></h2>
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'discogs/base.html' %}
+{% block content %}
+    <div>
+        <h1>Welcome to my personal discography!</h1>
+    </div>
+    <div>
+        <h2>Choose what you want to do:</h2>
+        <p><a href="{% url 'discogs:artist-list' %}">See all artist list</a></p>
+    </div>
+{% endblock %}

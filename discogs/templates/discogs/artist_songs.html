@@ -1,0 +1,6 @@
+{% extends 'discogs/base.html' %}
+{% block content %}
+{% for s in artist_songs %}
+<p>{{s.title}}</p>
+{% endfor %}
+{% endblock %}

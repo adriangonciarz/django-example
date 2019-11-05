@@ -1,0 +1,14 @@
+{% extends 'discogs/base.html' %}
+{% block content %}
+    <div>
+        <h1>{{ artist.name }} Albums</h1>
+    </div>
+    <div>
+        <ul>
+            {% for a in artist.album_set.all %}
+            <li>{{ a.title }}, {{ a.year }}, {{ a.get_genre_display }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div><a href="{% url 'discogs:artist-edit' artist.pk%}">Edit Artist</a></div>
+{% endblock %}
