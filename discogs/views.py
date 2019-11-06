@@ -1,46 +1,54 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import DeleteView
 
 from .models import Artist, Song
-from .forms import ArtistForm
+from .forms import ArtistForm, SongForm
 
 
 def index_view(request):
     return render(request, "discogs/index.html")
 
 
-def artist_list(request):
-    all_artists = Artist.objects.all()
-    context = {'all_artists': all_artists}
-    return render(request, 'discogs/artist_list.html', context)
+class ArtistList(generic.ListView):
+    model = Artist
+    context_object_name = 'artists'
 
 
-def artist_details(request, artist_id):
-    artist = get_object_or_404(Artist, pk=artist_id)
-    return render(request, 'discogs/artist_details.html', {'artist': artist})
+class ArtistDetails(generic.DetailView):
+    model = Artist
 
 
-def artist_new(request):
-    if request.method == 'POST':
-        form = ArtistForm(request.POST)
-        if form.is_valid():
-            artist = form.save()
-            return redirect('discogs:artist-details', artist_id=artist.pk)
-    else:
-        form = ArtistForm()
-    return render(request, 'discogs/artist_edit.html', {'form': form})
+class ArtistNew(generic.CreateView):
+    form_class = ArtistForm
+    model = Artist
+    success_url = reverse_lazy('discogs:artist-list')
 
 
-def artist_edit(request, artist_id):
-    artist = get_object_or_404(Artist, pk=artist_id)
-    if request.method == 'POST':
-        form = ArtistForm(request.POST, instance=artist)
-        if form.is_valid():
-            artist = form.save()
-            return redirect('discogs:artist-details', artist_id=artist.pk)
-    else:
-        form = ArtistForm(instance=artist)
-    return render(request, 'discogs/artist_edit.html', {'form': form})
+class ArtistEdit(generic.UpdateView):
+    form_class = ArtistForm
+    model = Artist
+
+
+class ArtistDelete(DeleteView):
+    model = Artist
+    success_url = 'discogs:artist-list'
+
+
+class SongList(generic.ListView):
+    model = Song
+    context_object_name = 'all_songs'
+
+
+class SongDetails(generic.DetailView):
+    model = Song
+    fields = ('title', 'duration', 'album')
+
+
+class SongEdit(generic.FormView):
+    form_class = SongForm
+
 
 class ArtistSongList(generic.ListView):
     model = Artist

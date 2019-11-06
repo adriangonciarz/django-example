@@ -1,0 +1,19 @@
+{% extends 'discogs/base.html' %}
+{% block content %}
+<div class="row">
+    <table class="table">
+        <thead class="thead-dark">
+            <td>Title</td>
+            <td>Artist</td>
+            <td>Duration</td>
+        </thead>
+        {% for s in all_songs %}
+        <tr>
+            <td>{{ s.title }}</td>
+            <td>{{ s.album.artist.name }}</td>
+            <td>{{ s.duration }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
